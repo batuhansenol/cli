@@ -315,6 +315,21 @@ class TestArgumentParser:
             KeyValueArg(
                 key='old_item', value='b', sep='=', orig='old_item=b'),
         ]
+        
+        
+    def test_guess_when_method_set_but_invalid_bare_hostname(self):
+        self.parser.args = argparse.Namespace()
+        self.parser.args.method = 'localhost'
+        self.parser.args.url = 'name=example-data'
+        self.parser.args.request_items = []
+        self.parser.args.ignore_stdin = False
+        self.parser.env = MockEnvironment()
+        self.parser._guess_method()
+        assert self.parser.args.method == 'POST'
+        assert self.parser.args.url == 'localhost'
+        assert self.parser.args.request_items == [
+            KeyValueArg(key='name', value='example-data', sep='=', orig='name=example-data')
+        ]
 
 
 class TestNoOptions:

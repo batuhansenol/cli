@@ -419,8 +419,7 @@ class HTTPieArgumentParser(BaseHTTPieArgumentParser):
             else:
                 self.args.method = HTTP_GET
 
-        # FIXME: False positive, e.g., "localhost" matches but is a valid URL.
-        elif not re.match('^[a-zA-Z]+$', self.args.method):
+        elif not re.match('^[a-zA-Z]+$', self.args.method) or self.args.method.lower() == 'localhost':
             # Invoked as `http URL item+'. The URL is now in `args.method`
             # and the first ITEM is now incorrectly in `args.url`.
             try:
